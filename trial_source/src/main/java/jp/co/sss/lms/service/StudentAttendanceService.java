@@ -15,6 +15,7 @@ import jp.co.sss.lms.entity.TStudentAttendance;
 import jp.co.sss.lms.enums.AttendanceStatusEnum;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
+import jp.co.sss.lms.mapper.MLmsUserMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
@@ -42,7 +43,21 @@ public class StudentAttendanceService {
 	@Autowired
 	private LoginUserDto loginUserDto;
 	@Autowired
+	private MLmsUserMapper mLmsUserMapper;
+	//@Autowired
+	//private MPlaceMapper mPlaceMapper;
+	//@Autowired
+	//private TCompanyAttendanceMapper tCompanyAttendanceMapper;
+	//@Autowired
+	//private TUserPlaceMapper tUserPlaceMapper;
+	@Autowired
 	private TStudentAttendanceMapper tStudentAttendanceMapper;
+	//@Autowired
+	//private PlaceService placeService;
+	@Autowired
+	private CourseService courseService;
+	//@Autowired
+	//private CompanyService companyService;
 
 	/**
 	 * 勤怠一覧情報取得
