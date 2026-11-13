@@ -361,4 +361,10 @@ public class StudentAttendanceService {
 		}
 		return false;
 	}
+	
+	/**
+	 * @param attendanceForm
+	 */
+	public void formatConversion(AttendanceForm attendanceForm) {
+	}
 }
