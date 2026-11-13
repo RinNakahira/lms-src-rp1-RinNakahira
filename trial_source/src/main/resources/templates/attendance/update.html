@@ -28,7 +28,7 @@
 							<th class="w140">日付</th>
 							<th class="w300">コース内容</th>
 							<th class="w70" colspan="3">出勤</th>
-							<th class="w70">退勤</th>
+							<th class="w70" colspan="3">退勤</th>
 							<th class="w80">中抜け時間</th>
 							<th class="w70">ステータス</th>
 							<th class="w240">備考</th>
@@ -61,8 +61,17 @@
 									</select>
 								</td>
 								<td class="w70">
-									<input type="text" th:name="|attendanceList[${stat.index}].trainingEndTime|"
-									th:value="${dailyAttendanceForm.trainingEndTime}" class="form-control" />
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" class="form-control">
+										<option th:each="entry : ${attendanceForm.hourMap}"
+										th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingEndTimeHour}"></option>
+									</select>
+								</td>
+								<td>:</td>
+								<td class="w70">
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" class="form-control">
+										<option th:each="entry : ${attendanceForm.minuteMap}"
+										th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingEndTimeMinute}"></option>
+									</select>
 								</td>
 								<td class="w80">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
