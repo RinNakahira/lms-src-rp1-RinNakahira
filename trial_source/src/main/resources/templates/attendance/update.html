@@ -55,7 +55,7 @@
 								</td>
 								<td>:</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinete|" class="form-control">
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" class="form-control">
 										<option th:each="entry : ${attendanceForm.minuteMap}"
 										th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingStartTimeMinute}"></option>
 									</select>
