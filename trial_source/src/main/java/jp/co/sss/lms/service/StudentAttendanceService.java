@@ -3,6 +3,7 @@ package jp.co.sss.lms.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -234,6 +235,18 @@ public class StudentAttendanceService {
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+		
+		LinkedHashMap<Integer, String> hourMap = new LinkedHashMap<>();
+		hourMap.put(null, "");
+		for (int i = 0; i < 24; i++) {
+			hourMap.put(i, String.format("%02d",i));
+		}
+		
+		LinkedHashMap<Integer, String> minuteMap = new LinkedHashMap<>();
+		minuteMap.put(null, "");
+		for (int i = 0; i < 60; i++) {
+			minuteMap.put(i, String.format("%02d",i));
+		}
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -250,9 +263,22 @@ public class StudentAttendanceService {
 					.setStudentAttendanceId(attendanceManagementDto.getStudentAttendanceId());
 			dailyAttendanceForm
 					.setTrainingDate(dateUtil.toString(attendanceManagementDto.getTrainingDate()));
-			dailyAttendanceForm
-					.setTrainingStartTime(attendanceManagementDto.getTrainingStartTime());
-			dailyAttendanceForm.setTrainingEndTime(attendanceManagementDto.getTrainingEndTime());
+			String startTimeString = attendanceManagementDto.getTrainingStartTime();
+			dailyAttendanceForm.setTrainingStartTime(startTimeString);
+			if (startTimeString != null) {
+				Integer startHour = Integer.parseInt(startTimeString.substring(0, 2));
+				dailyAttendanceForm.setTrainingStartTimeHour(startHour);
+				Integer startMinute = Integer.parseInt(startTimeString.substring(3));
+				dailyAttendanceForm.setTrainingStartTimeMinute(startMinute);
+			}
+			String endTimeString = attendanceManagementDto.getTrainingEndTime();
+			dailyAttendanceForm.setTrainingEndTime(endTimeString);
+			if (endTimeString != null) {
+				Integer endHour = Integer.parseInt(endTimeString.substring(0, 2));
+				dailyAttendanceForm.setTrainingEndTimeHour(endHour);
+				Integer endMinute = Integer.parseInt(endTimeString.substring(3));
+				dailyAttendanceForm.setTrainingEndTimeMinute(endMinute);
+			}
 			if (attendanceManagementDto.getBlankTime() != null) {
 				dailyAttendanceForm.setBlankTime(attendanceManagementDto.getBlankTime());
 				dailyAttendanceForm.setBlankTimeValue(String.valueOf(
@@ -366,5 +392,19 @@ public class StudentAttendanceService {
 	 * @param attendanceForm
 	 */
 	public void formatConversion(AttendanceForm attendanceForm) {
+		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
+			Integer startTimeHour = dailyAttendanceForm.getTrainingStartTimeHour();
+			Integer startTimeMinute = dailyAttendanceForm.getTrainingStartTimeMinute();
+			if (startTimeHour != null && startTimeMinute != null) {
+				String startTimeString = String.format("%02d:%02d", startTimeHour, startTimeMinute);
+				dailyAttendanceForm.setTrainingStartTime(startTimeString);
+			}
+			Integer endTimeHour = dailyAttendanceForm.getTrainingEndTimeHour();
+			Integer endTimeMinute = dailyAttendanceForm.getTrainingEndTimeMinute();
+			if (endTimeHour != null && endTimeMinute != null) {
+				String endTimeString = String.format("%02d:%02d", endTimeHour, endTimeMinute);
+				dailyAttendanceForm.setTrainingEndTime(endTimeString);
+			}
+		}
 	}
 }
