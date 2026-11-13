@@ -27,7 +27,7 @@
 						<tr>
 							<th class="w140">日付</th>
 							<th class="w300">コース内容</th>
-							<th class="w70">出勤</th>
+							<th class="w70" colspan="3">出勤</th>
 							<th class="w70">退勤</th>
 							<th class="w80">中抜け時間</th>
 							<th class="w70">ステータス</th>
@@ -48,8 +48,17 @@
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
 								<td class="w70">
-									<input type="text" th:name="|attendanceList[${stat.index}].trainingStartTime|"
-									th:value="${dailyAttendanceForm.trainingStartTime}" class="form-control" />
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control">
+										<option th:each="entry : ${attendanceForm.hourMap}"
+										th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingStartTimeHour}"></option>
+									</select>
+								</td>
+								<td>:</td>
+								<td class="w70">
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinete|" class="form-control">
+										<option th:each="entry : ${attendanceForm.minuteMap}"
+										th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingStartTimeMinute}"></option>
+									</select>
 								</td>
 								<td class="w70">
 									<input type="text" th:name="|attendanceList[${stat.index}].trainingEndTime|"
