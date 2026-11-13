@@ -241,12 +241,14 @@ public class StudentAttendanceService {
 		for (int i = 0; i < 24; i++) {
 			hourMap.put(i, String.format("%02d",i));
 		}
+		attendanceForm.setHourMap(hourMap);
 		
 		LinkedHashMap<Integer, String> minuteMap = new LinkedHashMap<>();
 		minuteMap.put(null, "");
 		for (int i = 0; i < 60; i++) {
 			minuteMap.put(i, String.format("%02d",i));
 		}
+		attendanceForm.setMinuteMap(minuteMap);
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -265,7 +267,7 @@ public class StudentAttendanceService {
 					.setTrainingDate(dateUtil.toString(attendanceManagementDto.getTrainingDate()));
 			String startTimeString = attendanceManagementDto.getTrainingStartTime();
 			dailyAttendanceForm.setTrainingStartTime(startTimeString);
-			if (startTimeString != null) {
+			if (!(startTimeString == null || startTimeString.isEmpty())) {
 				Integer startHour = Integer.parseInt(startTimeString.substring(0, 2));
 				dailyAttendanceForm.setTrainingStartTimeHour(startHour);
 				Integer startMinute = Integer.parseInt(startTimeString.substring(3));
@@ -273,7 +275,7 @@ public class StudentAttendanceService {
 			}
 			String endTimeString = attendanceManagementDto.getTrainingEndTime();
 			dailyAttendanceForm.setTrainingEndTime(endTimeString);
-			if (endTimeString != null) {
+			if (!(endTimeString == null || endTimeString.isEmpty())) {
 				Integer endHour = Integer.parseInt(endTimeString.substring(0, 2));
 				dailyAttendanceForm.setTrainingEndTimeHour(endHour);
 				Integer endMinute = Integer.parseInt(endTimeString.substring(3));
