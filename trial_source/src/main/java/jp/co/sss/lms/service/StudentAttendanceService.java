@@ -400,6 +400,33 @@ public class StudentAttendanceService {
 	}
 	
 	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result) {
-		
+		for (int i = 0; i < attendanceForm.getAttendanceList().size(); i++) {
+			DailyAttendanceForm form = attendanceForm.getAttendanceList().get(i);
+			
+			if (form.getNote().length() > 100) {
+				result.rejectValue("attendanceList[" + i + "].note", "maxlength");
+				return;
+			}
+			if (form.getTrainingStartTimeHour() == null ^ form.getTrainingStartTimeMinute() == null) {
+				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
+				return;
+			}
+			if (form.getTrainingEndTimeHour() == null ^ form.getTrainingEndTimeMinute() == null) {
+				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
+				return;
+			}
+			if (form.getTrainingStartTimeHour() == null && form.getTrainingEndTimeHour() != null) {
+				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "attendance.punchInEmpty");
+				return;
+			}
+			if (form.getTrainingStartTimeHour() == null && form.getBlankTime() != null) {
+				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
+				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
+				return;
+			}
+			if (form.getTrainingEndTimeHour() == null && form.getBlankTime() != null) {
+				
+			}
+		}
 	}
 }
