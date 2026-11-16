@@ -284,6 +284,9 @@ public interface Constants {
 	/** システムシェアード休憩終了 */
 	public static final TrainingTime SSS_REST_END_TIME = new TrainingTime("13:00");
 
+	/** 勤怠登録の備考欄最大文字数 */
+	public static final int ATTENDANCE_NOTE_MAX = 100;
+
 	/** 勤怠タイプ：出勤 */
 	public static final short CODE_VAL_ATWORK = 0;
 	/** 勤怠タイプ：退勤 */
