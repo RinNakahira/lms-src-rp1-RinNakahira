@@ -402,30 +402,47 @@ public class StudentAttendanceService {
 	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result) {
 		for (int i = 0; i < attendanceForm.getAttendanceList().size(); i++) {
 			DailyAttendanceForm form = attendanceForm.getAttendanceList().get(i);
+			Integer startHour = form.getTrainingStartTimeHour();
+			Integer startMinute = form.getTrainingStartTimeMinute();
+			Integer endHour = form.getTrainingEndTimeHour();
+			Integer endMinute = form.getTrainingEndTimeMinute();
 			
-			if (form.getNote().length() > 100) {
-				result.rejectValue("attendanceList[" + i + "].note", "maxlength");
+			if (form.getNote().length() > Constants.ATTENDANCE_NOTE_MAX) {
+				result.rejectValue("attendanceList[" + i + "].note", Constants.VALID_KEY_MAXLENGTH);
 				return;
 			}
-			if (form.getTrainingStartTimeHour() == null ^ form.getTrainingStartTimeMinute() == null) {
+			if (startHour == null ^ startMinute == null) {
 				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
 				return;
 			}
-			if (form.getTrainingEndTimeHour() == null ^ form.getTrainingEndTimeMinute() == null) {
+			if (endHour == null ^ endMinute == null) {
 				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
 				return;
 			}
-			if (form.getTrainingStartTimeHour() == null && form.getTrainingEndTimeHour() != null) {
+			if (startHour == null && endHour != null) {
 				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "attendance.punchInEmpty");
 				return;
 			}
-			if (form.getTrainingStartTimeHour() == null && form.getBlankTime() != null) {
+			if (startHour == null && form.getBlankTime() != null) {
 				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
 				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
 				return;
 			}
-			if (form.getTrainingEndTimeHour() == null && form.getBlankTime() != null) {
+			if (endHour != null) {
+				TrainingTime startTime = new TrainingTime(startHour, startMinute);
+				TrainingTime endTime = new TrainingTime(endHour, endMinute);
+				if (startTime.compareTo(endTime) > 0) {
+					result.rejectValue("attendanceList[" + i + "].trainingStartTime", "attendance.trainingTimeRange");
+					return;
+				}
 				
+				if (form.getBlankTime() == null) {
+					return;
+				}
+				TrainingTime blankTime = attendanceUtil.calcBlankTime(form.getBlankTime());
+				if (blankTime.compareTo(endTime.subtract(startTime)) > 0) {
+					result.rejectValue("attendanceList[" + i + "].blankTime", "attendance.blankTimeError");
+				}
 			}
 		}
 	}
