@@ -131,6 +131,36 @@ public class AttendanceUtil {
 		}
 		return map;
 	}
+	
+	/**
+	 * 時間のプルダウンマップを生成
+	 * 
+	 * @return 1時間刻みの時間(数値)マップ
+	 */
+	public LinkedHashMap<Integer, String> getHourMap() {
+		LinkedHashMap<Integer, String> hourMap = new LinkedHashMap<>();
+		hourMap.put(null, "");
+		for (int i = 0; i < 24; i++) {
+			hourMap.put(i, String.format("%02d",i));
+		}
+		
+		return hourMap;
+	}
+	
+	/**
+	 * 分のプルダウンマップを生成
+	 * 
+	 * @return 1分刻みの時間(数値)マップ
+	 */
+	public LinkedHashMap<Integer, String> getMinuteMap() {
+		LinkedHashMap<Integer, String> minuteMap = new LinkedHashMap<>();
+		minuteMap.put(null, "");
+		for (int i = 0; i < 60; i++) {
+			minuteMap.put(i, String.format("%02d",i));
+		}
+		
+		return minuteMap;
+	}
 
 	/**
 	 * 研修日の判定
@@ -146,5 +176,4 @@ public class AttendanceUtil {
 		}
 		return false;
 	}
-
 }
