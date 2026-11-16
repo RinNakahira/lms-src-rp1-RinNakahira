@@ -145,6 +145,15 @@ public class AttendanceController {
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
 	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
 			throws ParseException {
+		
+		studentAttendanceService.updateInputCheck(attendanceForm, result);
+		if (result.hasErrors()) {
+			attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+			attendanceForm.setHourMap(attendanceUtil.getHourMap());
+			attendanceForm.setMinuteMap(attendanceUtil.getMinuteMap());
+			model.addAttribute("attendanceForm", attendanceForm);
+			return "attendance/update";
+		}
 
 		studentAttendanceService.formatConversion(attendanceForm);
 		// 更新
