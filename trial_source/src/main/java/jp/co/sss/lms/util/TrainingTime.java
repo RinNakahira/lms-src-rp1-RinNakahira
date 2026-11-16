@@ -167,7 +167,7 @@ public class TrainingTime implements Comparable<TrainingTime>, Serializable {
 	/**
 	 * 値が (this - augend) の TrainingTime を返します。
 	 * 
-	 * @param augend - この TrainingTime から減産する値
+	 * @param augend - この TrainingTime から減算する値
 	 * @return this - augend
 	 */
 	public TrainingTime subtract(TrainingTime subtrahend) {
@@ -314,7 +314,7 @@ public class TrainingTime implements Comparable<TrainingTime>, Serializable {
 	}
 
 	/**
-	 * 分を15分刻みで切り上げる。出社に仕様
+	 * 分を15分刻みで切り上げる。出社に使用
 	 * 
 	 * @return
 	 */
@@ -333,7 +333,7 @@ public class TrainingTime implements Comparable<TrainingTime>, Serializable {
 	}
 
 	/**
-	 * 分を15分刻みで切り捨てる。退社に仕様
+	 * 分を15分刻みで切り捨てる。退社に使用
 	 * 
 	 * @return
 	 */
