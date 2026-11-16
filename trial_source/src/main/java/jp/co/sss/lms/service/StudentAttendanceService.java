@@ -3,12 +3,12 @@ package jp.co.sss.lms.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -236,19 +236,8 @@ public class StudentAttendanceService {
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
 		
-		LinkedHashMap<Integer, String> hourMap = new LinkedHashMap<>();
-		hourMap.put(null, "");
-		for (int i = 0; i < 24; i++) {
-			hourMap.put(i, String.format("%02d",i));
-		}
-		attendanceForm.setHourMap(hourMap);
-		
-		LinkedHashMap<Integer, String> minuteMap = new LinkedHashMap<>();
-		minuteMap.put(null, "");
-		for (int i = 0; i < 60; i++) {
-			minuteMap.put(i, String.format("%02d",i));
-		}
-		attendanceForm.setMinuteMap(minuteMap);
+		attendanceForm.setHourMap(attendanceUtil.getHourMap());
+		attendanceForm.setMinuteMap(attendanceUtil.getMinuteMap());
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -408,5 +397,9 @@ public class StudentAttendanceService {
 				dailyAttendanceForm.setTrainingEndTime(endTimeString);
 			}
 		}
+	}
+	
+	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result) {
+		
 	}
 }
