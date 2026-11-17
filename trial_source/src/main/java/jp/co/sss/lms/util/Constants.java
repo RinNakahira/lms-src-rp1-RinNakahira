@@ -166,6 +166,7 @@ public interface Constants {
 	public static final String PROP_KEY_MAIL_MAILFAILED_SUBJECT = "mail.mailfailed.subject";
 	public static final String PROP_KEY_MAIL_MAILFAILED_BODY = "mail.mailfailed.body";
 	public static final String PROP_KEY_ATTENDANCE_UPDATE_NOTICE = "attendance.update.notice";
+	public static final String PROP_KEY_ATTENDANCE_PUNCHINEMPTY = "attendance.punchInEmpty";
 	public static final String PROP_KEY_ATTENDANCE_COMPANY_JOSEIKININFOISNOTEXISTS = "attendance.company.joseiKinInfoIsNotExists";
 	public static final String PROP_KEY_REGIST_COMPLETE = "regist.complete";
 	public static final String PROP_KEY_UPDATE_COMPLETE = "update.complete";
