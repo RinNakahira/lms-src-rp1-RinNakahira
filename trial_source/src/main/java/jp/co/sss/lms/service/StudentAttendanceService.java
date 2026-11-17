@@ -367,6 +367,8 @@ public class StudentAttendanceService {
 	}
 
 	/**
+	 * 過去日の未入力チェック
+	 * 
 	 * @return [未入力日が0より大きい場合]:true,そうでない場合はfalseを戻す。
 	 * @throws ParseException
 	 */
@@ -380,6 +382,8 @@ public class StudentAttendanceService {
 	}
 	
 	/**
+	 * フォーム内の「時」と「分」の入力を、「hh:mm」形式の文字列に変換してセットする。
+	 * 
 	 * @param attendanceForm
 	 */
 	public void formatConversion(AttendanceForm attendanceForm) {
@@ -399,6 +403,12 @@ public class StudentAttendanceService {
 		}
 	}
 	
+	/**
+	 * 勤怠入力チェック
+	 * 
+	 * @param attendanceForm
+	 * @param result
+	 */
 	public void updateInputCheck(AttendanceForm attendanceForm, BindingResult result) {
 		for (int i = 0; i < attendanceForm.getAttendanceList().size(); i++) {
 			DailyAttendanceForm form = attendanceForm.getAttendanceList().get(i);
