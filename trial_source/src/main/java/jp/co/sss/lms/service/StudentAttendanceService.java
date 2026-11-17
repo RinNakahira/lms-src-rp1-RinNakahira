@@ -409,39 +409,49 @@ public class StudentAttendanceService {
 			
 			if (form.getNote().length() > Constants.ATTENDANCE_NOTE_MAX) {
 				result.rejectValue("attendanceList[" + i + "].note", Constants.VALID_KEY_MAXLENGTH);
-				return;
+				continue;
 			}
 			if (startHour == null ^ startMinute == null) {
-				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
-				return;
+				if (startHour == null) {
+					result.rejectValue("attendanceList[" + i + "].trainingStartTimeHour", Constants.INPUT_INVALID, new Object[] {"出勤時間"}, "");
+				} else {
+					result.rejectValue("attendanceList[" + i + "].trainingStartTimeMinute", Constants.INPUT_INVALID, new Object[] {"出勤時間"}, "");
+				}
+				continue;
 			}
 			if (endHour == null ^ endMinute == null) {
-				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
-				return;
+				if (endHour == null) {
+					result.rejectValue("attendanceList[" + i + "].trainingEndTimeHour", Constants.INPUT_INVALID, new Object[] {"退勤時間"}, "");
+				} else {
+					result.rejectValue("attendanceList[" + i + "].trainingEndTimeMinute", Constants.INPUT_INVALID, new Object[] {"退勤時間"}, "");
+				}
+				continue;
 			}
 			if (startHour == null && endHour != null) {
-				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "attendance.punchInEmpty");
-				return;
+				result.rejectValue("attendanceList[" + i + "].trainingStartTimeHour", Constants.PROP_KEY_ATTENDANCE_PUNCHINEMPTY);
+				result.rejectValue("attendanceList[" + i + "].trainingStartTimeMinute", "", "");
+				continue;
 			}
 			if (startHour == null && form.getBlankTime() != null) {
-				result.rejectValue("attendanceList[" + i + "].trainingStartTime", "input.invalid");
-				result.rejectValue("attendanceList[" + i + "].trainingEndTime", "input.invalid");
-				return;
+				result.rejectValue("attendanceList[" + i + "].trainingStartTimeHour", Constants.INPUT_INVALID, new Object[] {"出勤時間・退勤時間"}, "");
+				result.rejectValue("attendanceList[" + i + "].trainingStartTimeMinute", "", "");
+				continue;
 			}
 			if (endHour != null) {
 				TrainingTime startTime = new TrainingTime(startHour, startMinute);
 				TrainingTime endTime = new TrainingTime(endHour, endMinute);
 				if (startTime.compareTo(endTime) > 0) {
-					result.rejectValue("attendanceList[" + i + "].trainingStartTime", "attendance.trainingTimeRange");
-					return;
+					result.rejectValue("attendanceList[" + i + "].trainingEndTimeHour", Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE,new Object[] {endTime, startTime}, "");
+					result.rejectValue("attendanceList[" + i + "].trainingEndTimeMinute", "", "");
+					continue;
 				}
 				
 				if (form.getBlankTime() == null) {
-					return;
+					continue;
 				}
 				TrainingTime blankTime = attendanceUtil.calcBlankTime(form.getBlankTime());
 				if (blankTime.compareTo(endTime.subtract(startTime)) > 0) {
-					result.rejectValue("attendanceList[" + i + "].blankTime", "attendance.blankTimeError");
+					result.rejectValue("attendanceList[" + i + "].blankTime", Constants.VALID_KEY_ATTENDANCE_BLANKTIMEERROR);
 				}
 			}
 		}
