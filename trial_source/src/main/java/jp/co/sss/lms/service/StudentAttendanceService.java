@@ -418,7 +418,7 @@ public class StudentAttendanceService {
 			Integer endMinute = form.getTrainingEndTimeMinute();
 			
 			if (form.getNote().length() > Constants.ATTENDANCE_NOTE_MAX) {
-				result.rejectValue("attendanceList[" + i + "].note", Constants.VALID_KEY_MAXLENGTH);
+				result.rejectValue("attendanceList[" + i + "].note", Constants.VALID_KEY_MAXLENGTH, new Object[] {"備考", Constants.ATTENDANCE_NOTE_MAX}, "");
 				continue;
 			}
 			if (startHour == null ^ startMinute == null) {
