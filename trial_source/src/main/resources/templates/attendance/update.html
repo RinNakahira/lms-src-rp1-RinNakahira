@@ -55,9 +55,9 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w140">[[${dailyAttendanceForm.sectionName}]]</td>
-								<td class="w60"><input type="button" class="btn btn-success" value="定時" /></td>
+								<td class="w60"><input type="button" class="btn btn-success" value="定時" th:onclick="|pushTeijiBtn(${stat.index})|"/></td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control"
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeHour|" class="form-control" th:id="|startHour_${stat.index}|"
 											th:classappend="${#fields.hasErrors('attendanceForm.attendanceList[' + stat.index + '].trainingStartTimeHour')} ? 'errorInput'">
 										<option th:each="entry : ${attendanceForm.hourMap}"
 												th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingStartTimeHour}"></option>
@@ -65,14 +65,14 @@
 								</td>
 								<td>:</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" class="form-control"
+									<select th:name="|attendanceList[${stat.index}].trainingStartTimeMinute|" class="form-control" th:id="|startMinute_${stat.index}|"
 											th:classappend="${#fields.hasErrors('attendanceForm.attendanceList[' + stat.index + '].trainingStartTimeMinute')} ? 'errorInput'">
 										<option th:each="entry : ${attendanceForm.minuteMap}"
 												th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingStartTimeMinute}"></option>
 									</select>
 								</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" class="form-control"
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeHour|" class="form-control" th:id="|endHour_${stat.index}|"
 											th:classappend="${#fields.hasErrors('attendanceForm.attendanceList[' + stat.index + '].trainingEndTimeHour')} ? 'errorInput'">
 										<option th:each="entry : ${attendanceForm.hourMap}"
 												th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingEndTimeHour}"></option>
@@ -80,7 +80,7 @@
 								</td>
 								<td>:</td>
 								<td class="w70">
-									<select th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" class="form-control"
+									<select th:name="|attendanceList[${stat.index}].trainingEndTimeMinute|" class="form-control" th:id="|endMinute_${stat.index}|"
 											th:classappend="${#fields.hasErrors('attendanceForm.attendanceList[' + stat.index + '].trainingEndTimeMinute')} ? 'errorInput'">
 										<option th:each="entry : ${attendanceForm.minuteMap}"
 												th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key == dailyAttendanceForm.getTrainingEndTimeMinute}"></option>
@@ -127,9 +127,19 @@
 			}
 		}
     </script>
-    <script>
-		function pushTeijiBtn() {
+    <script type="text/javascript" th:inline="javascript">
+		function pushTeijiBtn(index) {
+			const startHour = document.getElementById('startHour_' + index);
+			startHour.value = '9';
 			
+			const startMinute = document.getElementById('startMinute_' + index);
+			startMinute.value = '0';
+			
+			const endHour = document.getElementById('endHour_' + index);
+			endHour.value = '18';
+			
+			const endMinute = document.getElementById('endMinute_' + index);
+			endMinute.value = '0';
 		}
 	</script>
 </body>
