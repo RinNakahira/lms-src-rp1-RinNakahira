@@ -58,7 +58,7 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 		
-		if (loginUserDto.getRole().equals(Constants.CODE_VAL_ROLL_STUDENT)) {
+		if (loginUserUtil.isStudent()) {
 			model.addAttribute("notEnterFlg", studentAttendanceService.notEnterCheck());
 		}
 
@@ -171,6 +171,9 @@ public class AttendanceController {
 
 	@GetMapping("/list")
 	public String list(AttendanceSearchForm attendanceSearchForm, Model model) {
-		return "";
+		if (!loginUserUtil.isLogin() || loginUserUtil.isStudent()) {
+			return "-";
+		}
+		return "attendance/list";
 	}
 }
