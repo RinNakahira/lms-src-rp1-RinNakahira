@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
+import jp.co.sss.lms.form.AttendanceSearchForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
 import jp.co.sss.lms.service.UserService;
 import jp.co.sss.lms.util.AttendanceUtil;
@@ -167,4 +169,8 @@ public class AttendanceController {
 		return "attendance/detail";
 	}
 
+	@GetMapping("/list")
+	public String list(AttendanceSearchForm attendanceSearchForm, Model model) {
+		return "";
+	}
 }
