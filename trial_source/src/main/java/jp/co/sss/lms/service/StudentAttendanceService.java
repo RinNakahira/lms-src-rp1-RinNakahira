@@ -15,6 +15,7 @@ import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.entity.TStudentAttendance;
 import jp.co.sss.lms.enums.AttendanceStatusEnum;
 import jp.co.sss.lms.form.AttendanceForm;
+import jp.co.sss.lms.form.AttendanceSearchForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
 import jp.co.sss.lms.mapper.MLmsUserMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
@@ -466,4 +467,10 @@ public class StudentAttendanceService {
 			}
 		}
 	}
+	
+	public AttendanceSearchForm getAttendanceSearchForm() {
+		return new AttendanceSearchForm();
+	}
+	
+	
 }
