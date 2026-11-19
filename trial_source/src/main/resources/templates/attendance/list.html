@@ -14,13 +14,13 @@
 				<h2>勤怠情報確認<small>(受講生一覧)</small></h2>
 				
 				<div class="well bs-component">
-					<form name="attendance_listActionForm" method="post" th:action="@{/attendance/list}" class="form-horizontal">
+					<form name="attendance_listActionForm" method="post" th:action="@{/attendance/list}" class="form-horizontal" th:object="${attendanceSearchForm}">
 						<fieldset>
 							<legend>検索</legend>
 							<div class="form-group">
 								<label for="courseName" class="col-lg-2 control-label">コース名</label>
 								<div class="col-lg-10">
-									<input type="text" th:name="courseName" th:value="" id="courseName" class="form-control" list="courselist">
+									<input type="text" th:field="*{courseName}" class="form-control" list="courselist">
 									
 									<datalist id="courselist">
 										<option value=""></option>
@@ -30,13 +30,13 @@
 							<div class="form-group">
 								<label for="placeId" class="col-lg-2 control-label">会場名</label>
 								<div class="col-lg-10">
-									<input type="text" name="placeName" value="${placeName}" readonly="readonly" id="placeName" class="form-control">
+									<input type="text" th:field="*{placeName}" readonly="readonly" class="form-control">
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="companyName" class="col-lg-2 control-label">企業名</label>
 								<div class="col-lg-10">
-									<input type="text" name="companyName" value="" id="companyName" class="form-control" list="companylist">
+									<input type="text" th:field="*{companyName}" class="form-control" list="companylist">
 									
 									<datalist id="companylist">
 										<option value=""></option>
