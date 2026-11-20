@@ -18,6 +18,7 @@ import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.AttendanceSearchForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
 import jp.co.sss.lms.mapper.MLmsUserMapper;
+import jp.co.sss.lms.mapper.MPlaceMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
@@ -46,8 +47,8 @@ public class StudentAttendanceService {
 	private LoginUserDto loginUserDto;
 	@Autowired
 	private MLmsUserMapper mLmsUserMapper;
-	//@Autowired
-	//private MPlaceMapper mPlaceMapper;
+	@Autowired
+	private MPlaceMapper mPlaceMapper;
 	//@Autowired
 	//private TCompanyAttendanceMapper tCompanyAttendanceMapper;
 	//@Autowired
@@ -469,7 +470,8 @@ public class StudentAttendanceService {
 	}
 	
 	public AttendanceSearchForm getAttendanceSearchForm() {
-		return new AttendanceSearchForm();
+		AttendanceSearchForm attendanceSearchForm = new AttendanceSearchForm();
+		return attendanceSearchForm;
 	}
 	
 	
