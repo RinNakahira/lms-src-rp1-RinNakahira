@@ -16,7 +16,6 @@ import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.AttendanceSearchForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
-import jp.co.sss.lms.service.UserService;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
 import jp.co.sss.lms.util.LoginUserUtil;
@@ -25,6 +24,9 @@ import jp.co.sss.lms.util.LoginUserUtil;
  * 勤怠管理コントローラ
  * 
  * @author 東京ITスクール
+ */
+/**
+ * 
  */
 @Controller
 @RequestMapping("/attendance")
@@ -38,8 +40,8 @@ public class AttendanceController {
 	private LoginUserDto loginUserDto;
 	@Autowired
 	private LoginUserUtil loginUserUtil;
-	@Autowired
-	private UserService userService;
+	//@Autowired
+	//private UserService userService;
 
 	/**
 	 * 勤怠管理画面 初期表示
@@ -58,6 +60,7 @@ public class AttendanceController {
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
 		
+		//中平 - Task25
 		if (loginUserUtil.isStudent()) {
 			model.addAttribute("notEnterFlg", studentAttendanceService.notEnterCheck());
 		}
@@ -169,6 +172,14 @@ public class AttendanceController {
 		return "attendance/detail";
 	}
 
+	
+	/**
+	 * 勤怠情報確認画面 初期表示
+	 * @author 中平 Task57
+	 * @param attendanceSearchForm
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/list")
 	public String list(AttendanceSearchForm attendanceSearchForm, Model model) {
 		if (!loginUserUtil.isLogin() || loginUserUtil.isStudent()) {

@@ -17,8 +17,6 @@ import jp.co.sss.lms.enums.AttendanceStatusEnum;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.AttendanceSearchForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
-import jp.co.sss.lms.mapper.MLmsUserMapper;
-import jp.co.sss.lms.mapper.MPlaceMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
@@ -45,10 +43,10 @@ public class StudentAttendanceService {
 	private LoginUserUtil loginUserUtil;
 	@Autowired
 	private LoginUserDto loginUserDto;
-	@Autowired
-	private MLmsUserMapper mLmsUserMapper;
-	@Autowired
-	private MPlaceMapper mPlaceMapper;
+	//@Autowired
+	//private MLmsUserMapper mLmsUserMapper;
+	//@Autowired
+	//private MPlaceMapper mPlaceMapper;
 	//@Autowired
 	//private TCompanyAttendanceMapper tCompanyAttendanceMapper;
 	//@Autowired
@@ -57,8 +55,8 @@ public class StudentAttendanceService {
 	private TStudentAttendanceMapper tStudentAttendanceMapper;
 	//@Autowired
 	//private PlaceService placeService;
-	@Autowired
-	private CourseService courseService;
+	//@Autowired
+	//private CourseService courseService;
 	//@Autowired
 	//private CompanyService companyService;
 
@@ -370,7 +368,7 @@ public class StudentAttendanceService {
 
 	/**
 	 * 過去日の未入力チェック
-	 * 
+	 * @author 中平 Task25
 	 * @return [未入力日が0より大きい場合]:true,そうでない場合はfalseを戻す。
 	 * @throws ParseException
 	 */
@@ -385,7 +383,7 @@ public class StudentAttendanceService {
 	
 	/**
 	 * フォーム内の「時」と「分」の入力を、「hh:mm」形式の文字列に変換してセットする。
-	 * 
+	 * @author 中平 Task26
 	 * @param attendanceForm
 	 */
 	public void formatConversion(AttendanceForm attendanceForm) {
@@ -407,7 +405,7 @@ public class StudentAttendanceService {
 	
 	/**
 	 * 勤怠入力チェック
-	 * 
+	 * @author 中平 Task27
 	 * @param attendanceForm
 	 * @param result
 	 */
@@ -469,6 +467,11 @@ public class StudentAttendanceService {
 		}
 	}
 	
+	/**
+	 * attendanceSearchFormの初期化
+	 * @author 中平
+	 * @return
+	 */
 	public AttendanceSearchForm getAttendanceSearchForm() {
 		AttendanceSearchForm attendanceSearchForm = new AttendanceSearchForm();
 		return attendanceSearchForm;
