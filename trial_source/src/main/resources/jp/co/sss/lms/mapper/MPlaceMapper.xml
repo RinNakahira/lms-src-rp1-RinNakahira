@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.sss.lms.mapper.MPlaceMapper">
+
+	<select id="findByPlaceId" resultType="jp.co.sss.lms.entity.MPlace">
+		SELECT *
+		FROM m_place
+		WHERE place_id = #{placeId}
+			AND hidden_flg = #{hiddenFlg}
+			AND delete_flg = #{deleteFlg}
+	</select>
+	
+	<select id="getUserAttendanceDto" resultType="jp.co.sss.lms.dto.UserAttendanceDto">
+		SELECT
+			place_id FROM p
+			lms_user_id FROM l
+			user_name FROM u
+			course_id FROM c
+			course_name FROM c
+			company_attendance_id FROM ca
+			student_attendance_id FROM sa
+			training_date FROM s
+			training_start_time FROM sa
+			training_end_time FROM sa
+			blank_time FROM sa
+			status FROM sa
+			note FROM sa
+		FROM m_place AS p
+			INNER JOIN t_user_place AS up
+				ON p.place_id = up.place_id
+					AND up.delete_flg = #{deleteFlg}
+			INNER JOIN m_lms_user AS l
+				ON up.lms_user_id = l.lms_user_id
+					AND l.delete_flg = #{deleteFlg}
+			INNER JOIN m_user AS u
+				ON l.user_id = u.user_id
+					AND u.delete_flg = #{deleteFlg}
+			INNER JOIN t_course_user AS cu
+				ON l.lms_user_id = cu.lms_user_id
+					AND cu.delete_flg = #{deleteFlg}
+			INNER JOIN m_course AS c
+				ON cu.course_id = c.course_id
+					AND c.delete_flg = #{deleteFlg}
+			INNER JOIN m_section AS s
+				ON c_course_id = s_course_id
+					AND s.training_date BETWEEN #{from} AND #{to}
+					AND s.delete_flg = #{deleteFlg}
+			LEFT OUTER JOIN t_student_attendance AS sa
+				ON l.lms_user_id = sa.lms_user_id
+					AND s.training_date = sa.training_date
+					AND sa.delete_flg = #{deleteFlg}
+			LEFT OUTER JOIN t_company_attendance AS ca
+				ON l.lms_user_id = ca.lms_user_id
+					AND s.training_date = ca.training_date
+					AND ca.delete_flg = #{deleteFlg}
+		WHERE (ca.training_date IS NULL
+			OR (ca.training_date IS NOT NULL
+				AND ca.training_start_time = ''
+				AND ca.training_end_time = ''
+				AND ca.status = '1'))
+			AND u.authority = '0001'
+			AND p.place_id = #{placeId}
+			AND p.delete_flg = #{deleteFlg}
+		ORDER BY s.training_date, l.lms_user_id
+	</select>
