@@ -64,3 +64,4 @@
 			AND p.delete_flg = #{deleteFlg}
 		ORDER BY s.training_date, l.lms_user_id
 	</select>
+</mapper>
