@@ -89,19 +89,21 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr role="row" class="odd">
-										<td class="sorting_1">24552</td>
-										<td>テスト受講生</td>
-										<td>【削除不可】体験型Java研修用【デモ】</td>
-										<td>動作確認【デモ】</td>
-										<td>1月会場A<small>（$$）</small></td>
-										<td>
-											<form name="attendance_updateActionForm" method="post" th:action="@{/attendance/detail}">
-												<input type="hidden" name="lmsUserId" value="24546">
-												<input type="submit" value="勤怠管理" class="btn btn-default">
-											</form>
-										</td>
-									</tr>
+									<th:block th:each="attendanceDetailDto, stat : ${attendanceDetailDtoList}">
+										<tr role="row" class="odd">
+											<td class="sorting_1">24552</td>
+											<td>テスト受講生</td>
+											<td>【削除不可】体験型Java研修用【デモ】</td>
+											<td>動作確認【デモ】</td>
+											<td>1月会場A<small>（$$）</small></td>
+											<td>
+												<form name="attendance_updateActionForm" method="post" th:action="@{/attendance/detail}">
+													<input type="hidden" name="lmsUserId" value="24546">
+													<input type="submit" value="勤怠管理" class="btn btn-default">
+												</form>
+											</td>
+										</tr>
+									</th:block>
 								</tbody>
 							</table>
 						</div>
