@@ -13,8 +13,8 @@ import jp.co.sss.lms.entity.MPlace;
 public interface MPlaceMapper {
 	
 	MPlace findByPlaceId(@Param("placeId") Integer placeId,
-			@Param("hiddenFlg") Integer hiddenFlg, @Param("deleteFlg") Integer deleteFlg);
+			@Param("hiddenFlg") short hiddenFlg, @Param("deleteFlg") short deleteFlg);
 
 	List<UserAttendanceDto> getUserAttendanceDto(@Param("placeId") Integer placeId, @Param("from") Date from,
-			@Param("to") Date to, @Param("deleteFlg") Integer deleteFlg);
+			@Param("to") Date to, @Param("deleteFlg") short deleteFlg);
 }
