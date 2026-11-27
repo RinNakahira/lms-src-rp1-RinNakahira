@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.validation.Valid;
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.AttendanceSearchForm;
+import jp.co.sss.lms.form.BulkRegistForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
+import jp.co.sss.lms.service.UserService;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
 import jp.co.sss.lms.util.LoginUserUtil;
@@ -40,8 +43,8 @@ public class AttendanceController {
 	private LoginUserDto loginUserDto;
 	@Autowired
 	private LoginUserUtil loginUserUtil;
-	//@Autowired
-	//private UserService userService;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 勤怠管理画面 初期表示
@@ -185,6 +188,24 @@ public class AttendanceController {
 		if (!loginUserUtil.isLogin() || loginUserUtil.isStudent()) {
 			return "-";
 		}
+		model.addAttribute("attendanceSearchForm", studentAttendanceService.getAttendanceSearchForm());
+		model.addAttribute("attendanceDetailDtoList", studentAttendanceService.getAttendanceDetailDto());
+		
 		return "attendance/list";
+	}
+	
+	@GetMapping("/bulkRegist")
+	public String bulkRegist(BulkRegistForm bulkRegistForm) {
+		studentAttendanceService.setBulkRegistForm(bulkRegistForm);
+		
+		if (loginUserUtil.isTeacher() || loginUserUtil.isAdmin()) {
+			return "attendance/bulkRegist";
+		}
+		return "-";
+	}
+	
+	@GetMapping(path="/bulkRegist", params="search")
+	public String bulkRegistSearch(@Valid BulkRegistForm bulkRegistForm, BindingResult result) {
+		return "attendance/bulkRegist";
 	}
 }
