@@ -1,6 +1,9 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,14 +12,20 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
+import jp.co.sss.lms.dto.AttendanceDetailDto;
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
+import jp.co.sss.lms.dto.PlaceDto;
 import jp.co.sss.lms.entity.TStudentAttendance;
 import jp.co.sss.lms.enums.AttendanceStatusEnum;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.AttendanceSearchForm;
+import jp.co.sss.lms.form.BulkRegistForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
+import jp.co.sss.lms.mapper.MLmsUserMapper;
+import jp.co.sss.lms.mapper.MPlaceMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
@@ -43,20 +52,20 @@ public class StudentAttendanceService {
 	private LoginUserUtil loginUserUtil;
 	@Autowired
 	private LoginUserDto loginUserDto;
-	//@Autowired
-	//private MLmsUserMapper mLmsUserMapper;
-	//@Autowired
-	//private MPlaceMapper mPlaceMapper;
+	@Autowired
+	private MLmsUserMapper mLmsUserMapper;
+	@Autowired
+	private MPlaceMapper mPlaceMapper;
 	//@Autowired
 	//private TCompanyAttendanceMapper tCompanyAttendanceMapper;
 	//@Autowired
 	//private TUserPlaceMapper tUserPlaceMapper;
 	@Autowired
 	private TStudentAttendanceMapper tStudentAttendanceMapper;
-	//@Autowired
-	//private PlaceService placeService;
-	//@Autowired
-	//private CourseService courseService;
+	@Autowired
+	private PlaceService placeService;
+	@Autowired
+	private CourseService courseService;
 	//@Autowired
 	//private CompanyService companyService;
 
@@ -477,5 +486,54 @@ public class StudentAttendanceService {
 		return attendanceSearchForm;
 	}
 	
+	/**
+	 * 受講生勤怠情報DTOリストを取得する
+	 * @return
+	 */
+	public List<AttendanceDetailDto> getAttendanceDetailDto() {
+		if (loginUserUtil.isTeacher()) {
+			List<AttendanceDetailDto> attendenceDetailDtoList = new ArrayList<>();
+			return attendenceDetailDtoList;
+		}
+		
+		return null;
+	}
 	
+	public void setBulkRegistForm(BulkRegistForm bulkRegistForm) {
+		PlaceDto placeDto = placeService.getPlaceDto();
+		String placeName = "";
+		String classroomName = "";
+		
+		if (placeDto != null && !placeDto.getPlaceNote().isBlank()) {
+			placeName = placeDto.getPlaceName();
+			//タイトル$教室名$備考のうち教室名のみ取り出す
+			String[] placeNote = placeDto.getPlaceNote().split("$");
+			if (placeNote.length == 3) {
+				classroomName = placeNote[1];
+			}
+			
+			bulkRegistForm.setPlaceName(placeName + "(" + classroomName + ")");
+		}
+	}
+	
+	public void searchInputCheck(BulkRegistForm bulkRegistForm, BindingResult result) throws ParseException {
+		if (result.hasErrors()) {
+			return;
+		}
+		Date now = new Date();
+		Date from = bulkRegistForm.getFrom();
+		Date to = bulkRegistForm.getTo();
+		LocalDate localDateFrom = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate localDateTo = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		if (to.after(now)) {
+			result.addError(new FieldError(result.getObjectName(), "searchPeriodFrom",messageUtil.getMessage(Constants.VALID_KEY_SEARCHTORANGEERROR,new String[] { messageUtil.getMessage("searchPeriodTo") })));
+		}
+		if (from.after(to)) {
+			result.addError(new FieldError(result.getObjectName(), "searchPeriodFrom",messageUtil.getMessage(Constants.VALID_KEY_SEARCHTORANGEERROR,new String[] { messageUtil.getMessage("searchPeriodTo") })));
+		}
+		if (Math.abs(ChronoUnit.DAYS.between(localDateFrom, localDateTo)) > 30) {
+			result.addError(new FieldError(result.getObjectName(), "searchPeriodFrom",messageUtil.getMessage(Constants.VALID_KEY_SEARCHTORANGEERROR,new String[] { messageUtil.getMessage("searchPeriodTo") })));
+		}
+	}
 }
